@@ -1,0 +1,28 @@
+<mat-card class="wide-card">
+    <mat-form-field>
+        <mat-label>To: </mat-label>
+        <mat-select
+        name="currencies" id="currency-select"
+        (selectionChange)="onSelect($event)"
+        [value]="value">
+            <mat-option
+                *ngFor="let currency of currencies | keyvalue"
+                [value]="currency.value.code">
+                {{ currency.value.name }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="width-100">
+        <mat-label>Amount: </mat-label>
+        <input
+            matInput
+            type="number"
+            name="amount"
+            [formControl]="numericFormControl"
+            (input)="onAmountInput($event.target)">
+        <mat-error *ngIf="numericFormControl.invalid">
+            Must be greater than zero.
+        </mat-error>
+    </mat-form-field>
+</mat-card>

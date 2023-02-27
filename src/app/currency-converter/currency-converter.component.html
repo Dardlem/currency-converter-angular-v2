@@ -1,0 +1,52 @@
+<div class="container">
+    <mat-card class="wide-card">
+        <mat-form-field>
+            <mat-label>API: </mat-label>
+            <input matInput type="text" [value]="API_KEY">
+        </mat-form-field>
+        <a href="https://freecurrencyapi.com/" *ngIf="API_KEY == ''" onblur="setApiKey()">Get your API</a>
+    </mat-card>
+    <mat-card class ="wide-card">
+        <div class="currency-selector">
+            <mat-form-field class="width-100">
+                <mat-label>From: </mat-label>
+                <mat-select
+                    name="currencies"
+                    id="currency-select"
+                    (selectionChange)="onBaseCurrencyChange($event)">
+                    <mat-option
+                        *ngFor="let currency of availableCurrencies | keyvalue"
+                        [value]="currency.value.code">
+                        {{ currency.value.name }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field class="width-100">
+                <mat-label>Amount: </mat-label>
+                <input
+                    matInput
+                    type="number"
+                    name="amount"
+                    [formControl]="numericFormControl"
+                    (input)="onAmountInput($event.target)">
+                <mat-error *ngIf="numericFormControl.invalid">
+                    Must be greater than zero.
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </mat-card>
+
+    <div *ngIf="selectedCurrencies">
+        <div>
+            <app-currency-card
+                [exchangeRate]="this.exchangeRate"
+                [amount]="amount"
+                [index]="index"
+                [currencies]="availableCurrencies"
+                (selectedExchangeCurrency)="onSelectedExchangeCurrency($event)">
+            </app-currency-card>
+        </div>
+    </div>
+</div>
